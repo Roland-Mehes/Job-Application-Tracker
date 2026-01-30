@@ -1,18 +1,9 @@
-import { DEFAULT_COLUMNS, DEFAULT_JOBS } from '@/constants';
+import KanbanBoard from '@/components/KanbanBoard';
 
-const Dashboard = () => {
+const Dashboard = async () => {
   return (
-    <div className=" mx-auto flex gap-10 max-w-full ">
-      {DEFAULT_COLUMNS.map((column) => (
-        <div key={column.name}>
-          {/* <KanbanBoard
-            title={column.name}
-            bgColor={column.bgColor}
-            jobs={DEFAULT_JOBS} 
-          /> */}
-          ELEM
-        </div>
-      ))}
+    <div className="mx-auto max-w-full p-4 flex flex-col gap-4">
+      <KanbanBoard />
     </div>
   );
 };

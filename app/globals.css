@@ -46,7 +46,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(100% 0.00011 271.152);
   --foreground: oklch(0.147 0.004 49.25);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.147 0.004 49.25);
@@ -77,6 +77,10 @@
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
   --sidebar-border: oklch(0.923 0.003 48.717);
   --sidebar-ring: oklch(0.709 0.01 56.259);
+  /* Kanban semantic colors */
+  --kanban-attended: var(--chart-2);
+  --kanban-rejected: var(--chart-5);
+  --kanban-interview: var(--chart-4);
 }
 
 .dark {
@@ -111,6 +115,9 @@
   --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.553 0.013 58.071);
+  --kanban-attended: var(--chart-2);
+  --kanban-rejected: var(--chart-5);
+  --kanban-interview: var(--chart-4);
 }
 
 @layer base {
