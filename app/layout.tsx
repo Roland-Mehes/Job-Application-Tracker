@@ -22,7 +22,7 @@ export default async function RootLayout({
   });
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-dvh flex flex-col">
         <ThemeProviderWrapper>
           <Navbar session={session} />

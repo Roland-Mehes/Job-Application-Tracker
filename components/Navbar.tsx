@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { NAVIGATION_ITEMS } from '@/constants';
 import UserDropdownMenu from './UserDropdownMenu';
 import type { Session } from '@/types/session';
-import ThemeSwitcher from './ThemeSwitcher';
+// import ThemeSwitcher from './ThemeSwitcher';
+import ThemeToggleDynamic from './ThemeToggleDynamic';
 
 const Navbar = ({ session }: { session: Session }) => {
   return (
@@ -16,6 +17,7 @@ const Navbar = ({ session }: { session: Session }) => {
           </div>
           {/* Navigation */}
           <div className="flex items-center gap-4">
+            <ThemeToggleDynamic />
             {session?.user ? (
               <div>
                 <UserDropdownMenu session={session} />
@@ -33,7 +35,7 @@ const Navbar = ({ session }: { session: Session }) => {
                 ))}
               </nav>
             )}
-            <ThemeSwitcher />
+            {/* <ThemeSwitcher /> */}
           </div>
         </div>
       </header>
