@@ -6,7 +6,7 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { DropdownMenuSeparator } from './ui/dropdown-menu';
+import { DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 
 interface JobCardProps {
   jobTitle: string;
@@ -27,9 +27,9 @@ const JobCard = ({
 }: JobCardProps) => {
   return (
     <Card
-      className="w-full flex flex-col gap-2 bg-card text-card-foreground border-l-4 cursor-pointer"
+      className="w-full flex flex-col gap-2 bg-card text-card-foreground border-l-4 cursor-move"
       style={{
-        borderColor: 'var(--column-color, var(--border))',
+        borderLeftColor: 'var(--column-color)',
       }}
     >
       <CardHeader>
@@ -60,7 +60,7 @@ const JobCard = ({
         {interviewDate && (
           <p
             className="text-sm font-medium mt-1"
-            style={{ color: 'var-(--column-color)' }}
+            style={{ color: 'var(--column-color)' }}
           >
             📅 Interview: {interviewDate}
           </p>

@@ -26,7 +26,6 @@ export default function KanbanBoard() {
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
-
     if (active.id === over.id) return;
 
     setJobs((prev) => {
@@ -35,7 +34,7 @@ export default function KanbanBoard() {
 
       if (!activeJob || !overJob) return prev;
 
-      // Action in the same column
+      // SAME COLUMN
       if (activeJob.status === overJob.status) {
         const columnJobs = prev
           .filter((j) => j.status === activeJob.status)
@@ -48,14 +47,20 @@ export default function KanbanBoard() {
           (job, index) => ({ ...job, order: index }),
         );
 
-        return prev.map((job) =>
+        const newState = prev.map((job) =>
           job.status === activeJob.status
             ? reordered.find((j) => j.id === job.id)!
             : job,
         );
+
+        // Database
+        persistChanges(reordered);
+        // Database
+
+        return newState;
       }
 
-      // Action in different columns
+      // DIFFERENT COLUMN
       const sourceJobs = prev
         .filter((j) => j.status === activeJob.status)
         .sort((a, b) => a.order - b.order)
@@ -78,6 +83,14 @@ export default function KanbanBoard() {
         order: index,
       }));
 
+      // Database
+      persistChanges(undefined, {
+        id: activeJob.id,
+        status: overJob.status,
+        targetOrder: newIndex,
+      });
+      // Database
+
       return [
         ...prev.filter(
           (j) => j.status !== activeJob.status && j.status !== overJob.status,
@@ -99,7 +112,7 @@ export default function KanbanBoard() {
       onDragStart={handleDragStart}
       onDragCancel={handleDragCancel}
     >
-      <div className="flex gap-6 overflow-x-auto p-4 mx-auto min-h-[70vh]">
+      <div className="flex gap-6 overflow-x-auto mx-auto min-h-[70vh]">
         {DEFAULT_COLUMNS.map((column) => (
           <KanbanColumn
             key={column.id}
@@ -114,4 +127,26 @@ export default function KanbanBoard() {
       </DragOverlay>
     </DndContext>
   );
+}
+
+//**
+// Kesobb torolni!!!
+//  */
+
+async function persistChanges(
+  newJobs?: Job[],
+  movedJob?: { id: string; status: string; targetOrder: number },
+) {
+  try {
+    await fetch('/api/kanban/move', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jobs: movedJob ? undefined : newJobs,
+        movedJob,
+      }),
+    });
+  } catch (err) {
+    console.error('Failed to persist Kanban changes', err);
+  }
 }

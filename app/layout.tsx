@@ -23,11 +23,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-dvh flex flex-col">
         <ThemeProviderWrapper>
           <Navbar session={session} />
 
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 mt-8">{children}</main>
 
           <Footer />
         </ThemeProviderWrapper>

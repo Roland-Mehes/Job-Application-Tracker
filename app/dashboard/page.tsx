@@ -1,8 +1,8 @@
-import KanbanBoard from '@/components/KanbanBoard';
+import KanbanBoard from '@/components/Dashboard/Kanban/KanbanBoard';
 
 const Dashboard = async () => {
   return (
-    <div className="mx-auto max-w-full p-4 flex flex-col gap-4">
+    <div className="mx-auto max-w-full flex flex-col gap-4">
       <KanbanBoard />
     </div>
   );

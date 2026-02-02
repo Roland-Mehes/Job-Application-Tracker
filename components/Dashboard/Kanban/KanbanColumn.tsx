@@ -1,7 +1,7 @@
 'use client';
 
 import { useDroppable } from '@dnd-kit/core';
-import DraggableJobCard from './DraggableJobCard';
+import KanbanJobCard from './KanbanJobCard';
 
 import type { Column, Job } from '@/types/kanban';
 
@@ -13,14 +13,17 @@ interface Props {
 }
 
 export default function KanbanColumn({ column, jobs }: Props) {
-  const { setNodeRef, isOver } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: column.id,
   });
 
   return (
     <div
       ref={setNodeRef}
-      className={`flex flex-col gap-4 w-80 shrink-0 rounded-2xl bg-muted shadow-lg ${isOver ? 'border-2 border-green-500' : ''} `}
+      className={`flex flex-col gap-4 w-80 shrink-0 border border-border rounded-2xl shadow-lg`}
+      style={{
+        ['--column-color' as string]: `var(--${column.color})`,
+      }}
     >
       <h2
         className="font-bold text-lg text-center py-3 rounded-t-2xl"
@@ -34,7 +37,7 @@ export default function KanbanColumn({ column, jobs }: Props) {
 
       <div className="px-4 pb-4 flex flex-col gap-4">
         {jobs.map((job) => (
-          <DraggableJobCard key={job.id} job={job} />
+          <KanbanJobCard key={job.id} job={job} />
         ))}
       </div>
     </div>

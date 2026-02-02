@@ -48,12 +48,14 @@ export default function SortableJobCard({ job }: { job: Job }) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {/*  Marking the top of the card when dropping */}
       {showTopIndicator && (
         <div className={`h-0.5 bg-primary rounded-full opacity-80 py-1 `} />
       )}
 
       <JobCard {...job} />
 
+      {/*  Marking the bottom of the card when dropping */}
       {showBottomIndicator && (
         <div className="h-0.5 py-1 bg-primary rounded-full opacity-80" />
       )}
