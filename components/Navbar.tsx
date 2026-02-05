@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { NAVIGATION_ITEMS } from '@/constants';
 import UserDropdownMenu from './UserDropdownMenu';
 import type { Session } from '@/types/session';
-// import ThemeSwitcher from './ThemeSwitcher';
 import ThemeToggleDynamic from './ThemeToggleDynamic';
 
 const Navbar = ({ session }: { session: Session }) => {

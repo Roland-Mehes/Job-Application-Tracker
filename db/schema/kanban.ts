@@ -18,6 +18,7 @@ export const kanbanJob = pgTable(
     company: text('company'),
     description: text('description'),
     salary: text('salary'),
+    skills: text('skills').array(),
 
     interviewDate: timestamp('interview_date'),
 

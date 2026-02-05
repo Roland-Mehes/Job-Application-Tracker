@@ -1,28 +1,20 @@
-export type ColumnId = 'attended' | 'rejected' | 'interview';
+import { KanbanStatus } from '@/types/kanbanStatus';
 
 export interface Column {
-  id: ColumnId;
+  id: KanbanStatus;
   name: string;
   color: string;
 }
 
 export interface Job {
   id: string;
-  status: ColumnId;
+  status: KanbanStatus;
   jobTitle: string;
   companyName: string;
-  description: string;
-  salary: string;
-  skills: string[];
-  interviewDate?: string;
+  description?: string;
   order: number;
-}
-
-export interface JobCardProps {
-  jobTitle: string;
-  companyName: string;
-  description: string;
-  salary: string;
+  salary?: string;
   skills: string[];
   interviewDate?: string;
+  createdAt: string;
 }

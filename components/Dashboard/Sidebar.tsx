@@ -23,7 +23,7 @@ const Sidebar = () => {
           <li className={` ${isOpen ? 'block' : 'hidden'}`}>
             <ul>
               <li>
-                <Link href="">Jobs</Link>
+                <Link href="/dashboard/">Jobs</Link>
               </li>
               <li>
                 <Link href="/dashboard/server">Database</Link>

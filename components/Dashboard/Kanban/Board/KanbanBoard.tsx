@@ -8,31 +8,71 @@ import {
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 
-import { useState } from 'react';
-import { DEFAULT_COLUMNS, DEFAULT_JOBS } from '@/constants';
-import KanbanColumn from './KanbanColumn';
+import { useMemo, useState } from 'react';
+import { DEFAULT_COLUMNS } from '@/constants';
+import KanbanColumn from '@/components/Dashboard/Kanban/Column/KanbanColumn';
 import type { Job } from '@/types/kanban';
-import JobCard from './JobCard';
+import JobCard from '../Cards/JobCard';
 
-export default function KanbanBoard() {
-  const [jobs, setJobs] = useState<Job[]>(DEFAULT_JOBS);
+type Props = {
+  initialJobs: Job[];
+};
+
+export default function KanbanBoard({ initialJobs }: Props) {
+  const [jobs, setJobs] = useState<Job[]>(initialJobs);
   const [activeItem, setActiveItem] = useState<Job | null>(null);
+
+  const jobsByStatus = useMemo(() => {
+    const map: Record<string, Job[]> = {
+      attended: [],
+      rejected: [],
+      interview: [],
+    };
+
+    jobs.forEach((job) => {
+      map[job.status].push(job);
+    });
+
+    return map;
+  }, [jobs]);
 
   function handleDragStart(event: DragStartEvent) {
     const job = jobs.find((j) => j.id === event.active.id);
+
     setActiveItem(job ?? null);
   }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
-    if (active.id === over.id) return;
 
     setJobs((prev) => {
       const activeJob = prev.find((j) => j.id === active.id);
-      const overJob = prev.find((j) => j.id === over.id);
+      if (!activeJob) return prev;
 
-      if (!activeJob || !overJob) return prev;
+      // If we dropped on epmty column
+      const columnDrop = DEFAULT_COLUMNS.find((col) => col.id === over.id);
+      if (columnDrop) {
+        const newStatus = columnDrop.id;
+        const targetJobs = prev.filter((j) => j.status === newStatus);
+        const newOrder = targetJobs.length;
+
+        persistChanges(undefined, {
+          id: activeJob.id,
+          status: newStatus,
+          targetOrder: newOrder,
+        });
+
+        return prev.map((j) =>
+          j.id === activeJob.id
+            ? { ...j, status: newStatus, order: newOrder }
+            : j,
+        );
+      }
+
+      // If we dropped on a card job
+      const overJob = prev.find((j) => j.id === over.id);
+      if (!overJob) return prev;
 
       // SAME COLUMN
       if (activeJob.status === overJob.status) {
@@ -107,6 +147,7 @@ export default function KanbanBoard() {
 
   return (
     <DndContext
+      id="draggable-table-01"
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
@@ -117,7 +158,7 @@ export default function KanbanBoard() {
           <KanbanColumn
             key={column.id}
             column={column}
-            jobs={jobs.filter((job) => job.status === column.id)}
+            jobs={jobsByStatus[column.id] ?? []}
           />
         ))}
       </div>
@@ -138,7 +179,7 @@ async function persistChanges(
   movedJob?: { id: string; status: string; targetOrder: number },
 ) {
   try {
-    await fetch('/api/kanban/move', {
+    await fetch('/api/kanban/move/', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

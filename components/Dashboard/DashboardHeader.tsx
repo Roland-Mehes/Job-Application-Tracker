@@ -1,6 +1,6 @@
 'use client';
 
-import AddNewJob from './Kanban/AddNewJob';
+import AddNewJob from './Kanban/Cards/AddJobDialog';
 
 const DashboardHeader = () => {
   return (
