@@ -1,0 +1,1 @@
+ALTER TABLE "kanban_job" ADD COLUMN "skills" text[];

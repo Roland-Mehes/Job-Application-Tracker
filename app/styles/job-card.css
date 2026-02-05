@@ -1,0 +1,27 @@
+.job-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.job-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background: linear-gradient(
+    45deg,
+    var(--column-color),
+    transparent,
+    transparent,
+    var(--column-color),
+    var(--column-color)
+  );
+  border-radius: inherit;
+  filter: blur(80px);
+  z-index: -1;
+}
+
+.job-card:hover::before {
+  animation: rotate 2s linear infinite;
+}

@@ -1,27 +1,44 @@
+'use client';
 import Link from 'next/link';
 import { NAVIGATION_ITEMS } from '@/constants';
+import UserDropdownMenu from './UserDropdownMenu';
+import type { Session } from '@/types/session';
+import ThemeToggleDynamic from './ThemeToggleDynamic';
 
-const Navbar = () => {
+const Navbar = ({ session }: { session: Session }) => {
   return (
-    <header className="sticky z-999 bg-white/80 backdrop-blur border-b flex justify-between mb-10">
-      <div className="container mx-auto px-20 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <div className="text-xl font-semibold">Logo</div>
-
-        {/* Navigation */}
-        <nav className="flex gap-12">
-          {NAVIGATION_ITEMS.map((item) => (
-            <Link
-              className="text-sm font-medium text-gray-600 hover:text-black transition"
-              key={item.name}
-              href={item.href}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-      </div>
-    </header>
+    <>
+      <header className="sticky top-0 z-50 bg-card/80 text-foreground backdrop-blur border-b border-border  ">
+        <div className="container mx-auto px-6 md:px-20 h-16 flex items-center justify-between">
+          {/* Logo */}
+          <div className="text-xl font-semibold text-primary">
+            <Link href={'/'}>Logo</Link>
+          </div>
+          {/* Navigation */}
+          <div className="flex items-center gap-4">
+            <ThemeToggleDynamic />
+            {session?.user ? (
+              <div>
+                <UserDropdownMenu session={session} />
+              </div>
+            ) : (
+              <nav className="flex gap-6 md:gap-12">
+                {NAVIGATION_ITEMS.map((item) => (
+                  <Link
+                    className="text-muted-foreground hover:text-foreground transition-colors text-sm relative "
+                    key={item.name}
+                    href={item.href}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </nav>
+            )}
+            {/* <ThemeSwitcher /> */}
+          </div>
+        </div>
+      </header>
+    </>
   );
 };
 
